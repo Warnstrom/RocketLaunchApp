@@ -1,22 +1,16 @@
-import React, { useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
-import { Button, Card, Modal, Paragraph, Title } from "react-native-paper";
+import React, { useCallback, useState } from "react";
+import { Alert, FlatList, Linking, StyleSheet, TouchableHighlight, TouchableOpacity } from "react-native";
+import { Button, Card, Modal, Paragraph, Title, Text } from "react-native-paper";
 import { mockNewsData } from "./mockData";
 
-
 export const news = () => {
-    
-  const [visible, setVisible] = React.useState(false);
   const [launchData, setData] = useState<any>(mockNewsData);
 
-  /* useEffect(() => {
-    if (missions) {
-      setData(missions);
-    }
-  });
-*/
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const handlePress = (url: string) => {
+    Linking.canOpenURL(url).then(() => {
+      Linking.openURL(url);
+    });
+  };
 
   return (
     <FlatList
@@ -28,29 +22,65 @@ export const news = () => {
           <Card.Content>
             <Title>Description</Title>
             <Paragraph>{item.description}</Paragraph>
-            <Paragraph>{item.news_url}</Paragraph>
-            <Paragraph>{item.video_url}</Paragraph>
+
           </Card.Content>
           <Card.Actions>
-            <Button style={[styles.buttonStyles, { display: item.webcast_live ? "flex" : "none" }]} mode="contained" color="#e63946">
-              Watch live
-            </Button>
+            <TouchableHighlight
+              style={[styles.button, { backgroundColor: "#457b9d", display: item.news_url ? "flex" : "none" }]}
+              onPress={() => {
+                handlePress(item.news_url);
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              >
+                Read more
+              </Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={[styles.button, { backgroundColor: "#9e2a2b", display: item.video_url ? "flex" : "none" }]}
+              onPress={() => {
+                handlePress(item.video_url);
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              >
+                Watch live
+              </Text>
+            </TouchableHighlight>
           </Card.Actions>
         </Card>
       )}
     ></FlatList>
   );
-}
+};
 const styles = StyleSheet.create({
-    card: {
-      marginTop: 25,
-      fontSize: 18,
-      borderColor: "#8d99ae",
-      borderRadius: 8,
-      borderWidth: 1,
-      margin: 5,
-    },
-    buttonStyles: {
-      margin: 5,
-    },
-  });
+  card: {
+    marginTop: 25,
+    fontSize: 18,
+    borderColor: "#8d99ae",
+    borderRadius: 8,
+    borderWidth: 1,
+    margin: 5,
+  },
+  buttonStyles: {
+    margin: 5,
+  },
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    margin: 5,
+    width: 80,
+    height: 35,
+  },
+});
