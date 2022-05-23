@@ -1,10 +1,21 @@
-import React, { useCallback, useState } from "react";
-import { Alert, FlatList, Linking, StyleSheet, TouchableHighlight, TouchableOpacity } from "react-native";
-import { Button, Card, Modal, Paragraph, Title, Text } from "react-native-paper";
-import { mockNewsData } from "./mockData";
-
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, Linking, StyleSheet, TouchableHighlight, View } from "react-native";
+import { Card, Paragraph, Title, Text, Colors } from "react-native-paper";
+import moment from "moment";
+import { mission } from "../api/getLaunches";
 export const news = () => {
-  const [launchData, setData] = useState<any>(mockNewsData);
+  const [launchData, setData] = useState<any>();
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    const missions = await mission.news();
+    setData(missions);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handlePress = (url: string) => {
     Linking.canOpenURL(url).then(() => {
@@ -13,54 +24,61 @@ export const news = () => {
   };
 
   return (
-    <FlatList
-      data={launchData}
-      renderItem={({ item }) => (
-        <Card style={styles.card}>
-          <Card.Cover source={{ uri: item.feature_image }} />
-          <Card.Title title={item.name} subtitle={item.date} />
-          <Card.Content>
-            <Title>Description</Title>
-            <Paragraph>{item.description}</Paragraph>
-
-          </Card.Content>
-          <Card.Actions>
-            <TouchableHighlight
-              style={[styles.button, { backgroundColor: "#457b9d", display: item.news_url ? "flex" : "none" }]}
-              onPress={() => {
-                handlePress(item.news_url);
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              >
-                Read more
-              </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={[styles.button, { backgroundColor: "#9e2a2b", display: item.video_url ? "flex" : "none" }]}
-              onPress={() => {
-                handlePress(item.video_url);
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              >
-                Watch live
-              </Text>
-            </TouchableHighlight>
-          </Card.Actions>
-        </Card>
+    <View>
+      {loading ? (
+        <View>
+          <ActivityIndicator style={{ marginTop: 40 }} animating={true} color={Colors.red800} />
+        </View>
+      ) : (
+        <FlatList
+          data={launchData}
+          renderItem={({ item }) => (
+            <Card style={styles.card}>
+              <Card.Cover source={{ uri: item.feature_image }} />
+              <Card.Title title={[item.name, " | ", moment(item.date).fromNow()]} subtitle={moment(item.date).format("LLL")} />
+              <Card.Content>
+                <Title>Description</Title>
+                <Paragraph>{item.description}</Paragraph>
+              </Card.Content>
+              <Card.Actions>
+                <TouchableHighlight
+                  style={[styles.button, { backgroundColor: "#457b9d", display: item.news_url ? "flex" : "none" }]}
+                  onPress={() => {
+                    handlePress(item.news_url);
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Read more
+                  </Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={[styles.button, { backgroundColor: "#9e2a2b", display: item.video_url ? "flex" : "none" }]}
+                  onPress={() => {
+                    handlePress(item.video_url);
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Watch live
+                  </Text>
+                </TouchableHighlight>
+              </Card.Actions>
+            </Card>
+          )}
+        ></FlatList>
       )}
-    ></FlatList>
+    </View>
   );
 };
 const styles = StyleSheet.create({

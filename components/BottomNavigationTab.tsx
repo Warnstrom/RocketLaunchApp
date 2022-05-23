@@ -1,6 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import React from "react";
 import { BottomNavigation, Text } from "react-native-paper";
 import { AppBarTop } from "./AppBarTop";
 import { launches } from "./launches";
@@ -14,8 +12,6 @@ export const BottomNavigationTab = () => {
   const [routes] = React.useState([
     { key: "launches", title: "Upcoming", icon: "rocket-launch" },
     { key: "news", title: "News", icon: "newspaper" },
-    { key: "agencies", title: "Agencies", icon: "account-group" },
-    { key: "rockets", title: "Rockets", icon: "rocket" },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
@@ -25,10 +21,14 @@ export const BottomNavigationTab = () => {
     rockets: rockets,
   });
   return (
-      <><AppBarTop appTitle={routes[index].title} /><BottomNavigation
-          barStyle={{ backgroundColor: "#1d3557", padding: 5 }}
-          navigationState={{ index, routes }}
-          onIndexChange={setIndex}
-          renderScene={renderScene} /></>
+    <>
+      <AppBarTop appTitle={routes[index].title} />
+      <BottomNavigation
+        barStyle={{ backgroundColor: "#1d3557", padding: 5 }}
+        navigationState={{ index, routes }}
+        onIndexChange={setIndex}
+        renderScene={renderScene}
+      />
+    </>
   );
 };

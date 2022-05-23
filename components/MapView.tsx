@@ -1,23 +1,26 @@
-import MapView from 'react-native-maps';
+import MapView from "react-native-maps";
 import * as React from "react";
 import { Appbar } from "react-native-paper";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 interface MapViewType {
   flongitude: string;
   flatitude: string;
   furl: string;
 }
-
-export const MapViewComponent = ({ flongitude, flatitude, furl }: MapViewType) => {
+//{ flongitude, flatitude, furl }: MapViewType
+export const MapViewComponent = () => {
   return (
-    <MapView
-      initialRegion={{
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      }}
-    ></MapView>
+    <View>
+      <Text>dasd</Text>
+      <MapView
+        initialRegion={{
+          latitude: 37.78825,
+          longitude: -122.4324,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      ></MapView>
+    </View>
   );
 };
 

@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet } from "react-native";
 import { BottomNavigationTab } from "./components/BottomNavigationTab";
 export default function App() {
   return (

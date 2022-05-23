@@ -5,8 +5,6 @@ interface AppbarTitleType {
   appTitle: string;
 }
 export const AppBarTop = ({ appTitle }: AppbarTitleType) => {
-  const [title, setTitle] = React.useState("");
-
   return (
     <Appbar style={styles.bottom}>
       <Appbar.Content title={appTitle} />
