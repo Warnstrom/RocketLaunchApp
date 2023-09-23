@@ -1,0 +1,7 @@
+workflows:
+    android-workflow-id:
+        name: Android Sample Workflows
+          
+        environment:
+            android_signing:
+              anton
