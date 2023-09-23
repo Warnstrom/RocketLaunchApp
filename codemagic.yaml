@@ -4,4 +4,8 @@ workflows:
           
         environment:
             android_signing:
-              anton
+              - keystore: anton
+              keystore_environment_variable: RocketLaunchApp\codemagic.keystore
+              keystore_password_environment_variable: keytool_password
+              key_alias_environment_variable: codemagic
+              key_password_environment_variable: key_password
