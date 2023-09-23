@@ -12,8 +12,8 @@ export const launches = () => {
   const [modalData, setModalData] = useState<any>(mockLaunchData[0]);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async () => {
-    const missions = await mission.all("");
+  function fetchData() {
+    const missions = mission.all("");
     setData(missions);
     setLoading(false);
   };
